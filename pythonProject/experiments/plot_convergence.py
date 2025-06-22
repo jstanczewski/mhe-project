@@ -2,46 +2,39 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
 
+LOGS_DIR = Path('experiments') / 'logs'
+OUTPUT_DIR = LOGS_DIR.parent
+
+
 def main():
-    # Ścieżka do katalogu z logami
-    logs_dir = Path('experiments') / 'logs'
-    if not logs_dir.exists():
-        print(f"No logs directory found at {logs_dir}")
+    if not LOGS_DIR.exists():
+        print(f"Logs directory not found: {LOGS_DIR}")
         return
 
-    # Wczytaj wszystkie pliki CSV z logami
-    log_files = sorted(logs_dir.glob('*.csv'))
+    log_files = sorted(LOGS_DIR.glob('*.csv'))
     if not log_files:
-        print("No log files to plot.")
+        print(f"No log files in {LOGS_DIR}")
         return
 
-    # Grupowanie plików według wielkości instancji (prefix przed '_')
-    instances = {}
-    for file in log_files:
-        stem = file.stem  # np. 'small_hill_det'
-        parts = stem.split('_', 1)
-        if len(parts) != 2:
-            continue
-        inst, alg = parts
-        instances.setdefault(inst, []).append((alg, file))
-
-    # Generowanie oddzielnego wykresu dla każdej instancji
-    for inst, alg_files in instances.items():
+    for log_file in log_files:
+        df = pd.read_csv(log_file)
         plt.figure(figsize=(8, 5))
-        for alg, file in alg_files:
-            df = pd.read_csv(file)
-            plt.plot(df['time'], df['best_obj'], label=alg)
-
+        plt.plot(df['time'], df['best_obj'], label=log_file.stem)
         plt.xlabel('Time (s)')
         plt.ylabel('|Sum – Target|')
-        plt.title(f'Convergence Curves for {inst.capitalize()} Instance')
+        plt.title(f'Convergence: {log_file.stem}')
+
+        # Ustawienie skali Y w zależności od instancji
+        inst = log_file.stem.split('_')[0]
+        max_val = df['best_obj'].max()
+        plt.ylim(0, max_val * 1.1)
+
         plt.legend()
         plt.tight_layout()
 
-        # Zapis wykresu do pliku
-        output_file = logs_dir.parent / f'convergence_{inst}.png'
-        plt.savefig(output_file)
-        print(f"Saved plot for '{inst}' to {output_file}")
+        output_path = OUTPUT_DIR / f"{log_file.stem}.png"
+        plt.savefig(output_path)
+        print(f"Saved plot: {output_path}")
         plt.close()
 
 if __name__ == '__main__':

@@ -1,9 +1,9 @@
 import time
 import random
 from typing import List, Tuple
-
 from solver.problem import SubsetSum
 from solver.neighborhood import flip_neighbor, all_neighbors
+
 
 def genetic_algorithm(
     problem: SubsetSum,

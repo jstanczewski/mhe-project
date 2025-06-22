@@ -8,10 +8,6 @@ from pathlib import Path
 from solver.problem import SubsetSum
 from solver.neighborhood import flip_neighbor, all_neighbors
 from solver.algorithms.full_search import full_search
-from solver.algorithms.ga import genetic_algorithm
-from solver.algorithms.sa import simulated_annealing
-from solver.algorithms.tabu import tabu_search
-from solver.algorithms.hill_climb import hill_climb
 
 
 def parse_args():
@@ -24,6 +20,8 @@ def parse_args():
     parser.add_argument('--algorithm', '-a', required=True,
                         choices=['full', 'hill', 'tabu', 'sa', 'ga'],
                         help='Which algorithm to run')
+    parser.add_argument('--label', '-l',
+                        help='Custom label for log filename (defaults to algorithm)')
     parser.add_argument('--neighborhood', '-n', choices=['flip', 'all'], default='flip',
                         help='Type of neighborhood to use')
     parser.add_argument('--time-limit', '-t', type=float,
@@ -67,14 +65,16 @@ def main():
     if args.target is not None:
         problem.target = args.target
 
+    # Przygotuj etykietę do nazwy pliku logu
+    label = args.label if args.label else args.algorithm
+
     # Dispatcher algorytmu
     start_time = time.time()
-    # Każdy algorytm zwraca teraz (best_sol, best_obj) lub (best_sol, best_obj, history)
-    result = None
     if args.algorithm == 'full':
         best_sol, best_obj = full_search(problem, time_limit=args.time_limit)
         history = [(time.time() - start_time, best_obj)]
     elif args.algorithm == 'hill':
+        from solver.algorithms.hill_climb import hill_climb
         neigh = flip_neighbor if args.neighborhood == 'flip' else all_neighbors
         best_sol, best_obj, history = hill_climb(
             problem,
@@ -83,6 +83,7 @@ def main():
             random_choice=args.random_choice
         )
     elif args.algorithm == 'tabu':
+        from solver.algorithms.tabu import tabu_search
         neigh = all_neighbors if args.neighborhood == 'all' else flip_neighbor
         best_sol, best_obj, history = tabu_search(
             problem,
@@ -91,6 +92,7 @@ def main():
             time_limit=args.time_limit
         )
     elif args.algorithm == 'sa':
+        from solver.algorithms.sa import simulated_annealing
         best_sol, best_obj, history = simulated_annealing(
             problem,
             neighborhood=flip_neighbor,
@@ -101,6 +103,7 @@ def main():
             time_limit=args.time_limit
         )
     elif args.algorithm == 'ga':
+        from solver.algorithms.ga import genetic_algorithm
         best_sol, best_obj, history = genetic_algorithm(
             problem,
             pop_size=args.pop_size,
@@ -114,7 +117,7 @@ def main():
 
     elapsed = time.time() - start_time
 
-    # Wyświetlenie wyników końcowych
+    # Wyświetlenie wyników
     total = sum(val for val, bit in zip(problem.values, best_sol) if bit)
     print('Best solution:', best_sol)
     print('Sum:', total)
@@ -125,14 +128,13 @@ def main():
     logs_dir = Path('experiments') / 'logs'
     logs_dir.mkdir(parents=True, exist_ok=True)
     instance_name = Path(args.input).stem
-    log_file = logs_dir / f"{instance_name}_{args.algorithm}.csv"
+    log_file = logs_dir / f"{instance_name}_{label}.csv"
     with open(log_file, 'w', newline='') as f:
         writer = csv.writer(f)
         writer.writerow(['time', 'best_obj'])
         for t, obj in history:
             writer.writerow([f"{t:.4f}", obj])
     print(f"History saved to {log_file}")
-
 
 if __name__ == '__main__':
     main()

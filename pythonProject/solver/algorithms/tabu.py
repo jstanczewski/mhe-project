@@ -30,8 +30,7 @@ def tabu_search(
     best = current.copy()
     best_obj = current_obj
 
-    history: List[Tuple[float, int]] = []
-    history.append((0.0, best_obj))
+    history: List[Tuple[float, int]] = [(0.0, best_obj)]
 
     tabu_list: List[int] = []  # przechowuje ostatnie indeksy bitów, które były flipowane
 

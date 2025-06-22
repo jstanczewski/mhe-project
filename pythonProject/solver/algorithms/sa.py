@@ -2,7 +2,6 @@ import time
 import math
 import random
 from typing import Callable, List, Tuple
-
 from solver.problem import SubsetSum
 
 
@@ -40,9 +39,8 @@ def simulated_annealing(
     best_obj = current_obj
     temp = initial_temp
 
-    history: List[Tuple[float, int]] = []
+    history: List[Tuple[float, int]] = [(0.0, best_obj)]
     # Zapisz stan początkowy
-    history.append((0.0, best_obj))
 
     iteration = 0
     while temp > min_temp:
