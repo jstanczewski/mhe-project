@@ -33,6 +33,6 @@ Tabu na rozmiarze 10, input 1k <br>
 Tabu na rozmiarze 10, input 10k <br>
 ![huge_tabu.png](assets%2Fhuge_tabu.png)<br>
 Tabu na rozmiarze 20, input 1k <br>
-<br>
+![large_tabu_2.png](assets%2Flarge_tabu_2.png)<br>
 Tabu na rozmiarze 20, input 10k <br>
-<br>
+![huge_tabu_2.png](assets%2Fhuge_tabu_2.png)<br>
