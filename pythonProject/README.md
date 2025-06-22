@@ -70,3 +70,8 @@ init-temp 200, alpha 0.8, min-temp 0.0001<br>
 Harmonogram liniowy, szybkie schładzanie, dane wejściowe<br>
 init-temp 200, alpha 2, min-temp 0.01<br>
 ![huge_sa_lin3.png](assets%2Fhuge_sa_lin3.png)<br>
+
+**Wnioski:**<br>
+Przy schładzaniu wolnym oraz umiarkowanym otrzymujemy dość porównywalne wyniki zarówno dla harmonogramu liniowego
+symulowanego wyżarzania jak i dla wykładniczego. Przy schładzaniu szybkim zaobserwować możemy olbrzymi spadek dokładności,
+osiągamy minimalną temperaturę przy wyniku dalekim od optymalnego.

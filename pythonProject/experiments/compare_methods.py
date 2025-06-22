@@ -14,14 +14,14 @@ TEST_INSTANCES = [
 # Parametry dla algorytmów
 SA_EXP_PARAMS = {
     'schedule': 'exponential',
-    'initial_temp': '200',
-    'alpha': '0.8',
+    'initial_temp': '500',
+    'alpha': '0.95',
     'min_temp': '0.0001'
 }
 SA_LIN_PARAMS = {
     'schedule': 'linear',
-    'initial_temp': '200',
-    'alpha': '2',
+    'initial_temp': '500',
+    'alpha': '1',
     'min_temp': '0.001'
 }
 TABU_PARAMS = {
