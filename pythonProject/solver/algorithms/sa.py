@@ -15,65 +15,68 @@ def simulated_annealing(
     min_temp: float = 1e-3
 ) -> Tuple[List[int], int, List[Tuple[float, int]]]:
     """
-    Algorytm symulowanego wyżarzania dla problemu Subset Sum.
+    Perform simulated annealing to minimize |sum(selected) - target| for Subset Sum.
 
-    Parametry:
-    - problem: instancja SubsetSum
-    - neighborhood: funkcja generująca losowego sąsiada (flip_neighbor)
-    - schedule: schemat obniżania temperatury ('exponential' lub 'linear')
-    - initial_temp: początkowa temperatura
-    - alpha: współczynnik chłodzenia (dla exponential)
-    - min_temp: minimalna temperatura, po której kończymy
-    - time_limit: opcjonalne ograniczenie czasu w sekundach
+    Args:
+        problem: SubsetSum instance containing the values array and target sum.
+        neighborhood: function generating one neighbor solution from current state.
+        schedule: temperature update scheme, either 'exponential' or 'linear'.
+        time_limit: optional maximum runtime in seconds before stopping.
+        initial_temp: starting temperature for annealing process.
+        alpha: cooling factor (multiplier for exponential) or decrement for linear.
+        min_temp: threshold temperature to end the annealing loop.
 
-    Zwraca:
-    - best_solution: najlepszy znaleziony wektor bitów
-    - best_obj: wartość funkcji celu dla best_solution
-    - history: lista krotek (czas, best_obj) rejestrująca postęp algorytmu
+    Returns:
+        best_solution: bit list representing the best subset found.
+        best_obj: integer objective value |sum(current) - target| of best_solution.
+        history: list of (elapsed_time, best_obj) tuples at each improvement.
     """
     start_time = time.time()
-    # Start z losowego rozwiązania
+
+    # Initialize with a random starting solution
     current = problem.random_solution()
     current_obj = problem.objective(current)
     best = current.copy()
     best_obj = current_obj
     temp = initial_temp
 
+    # Record improvement history, starting with initial state
     history: List[Tuple[float, int]] = [(0.0, best_obj)]
-    # Zapisz stan początkowy
 
-    iteration = 0
+    # Main annealing loop: continue while temperature remains above minimum
     while temp > min_temp:
-        if time_limit is not None and time.time() - start_time > time_limit:
+        # Check and enforce time limit
+        if time_limit is not None and (time.time() - start_time) > time_limit:
             break
 
-        # Generate neighbor solution
+        # Generate a new candidate by flipping a bit (or other neighborhood move)
         neighbor = neighborhood(current)
         neighbor_obj = problem.objective(neighbor)
 
-        # Accept if better or by probability
+        # Calculate change in objective (energy difference)
         delta = neighbor_obj - current_obj
+        # Always accept improvement; accept worse with probability exp(-delta/temp)
         if delta < 0 or random.random() < math.exp(-delta / temp):
             current = neighbor
             current_obj = neighbor_obj
-            # Update best
+
+            # If this is the best solution so far, record it
             if current_obj < best_obj:
                 best = current.copy()
                 best_obj = current_obj
-                # Record improvement
                 elapsed = time.time() - start_time
                 history.append((elapsed, best_obj))
+
+                # Early exit if perfect match found
                 if best_obj == 0:
                     break
 
-        # Update temperature
+        # Update the temperature according to the chosen schedule
         if schedule == 'exponential':
             temp *= alpha
         elif schedule == 'linear':
             temp -= alpha
         else:
             temp *= alpha
-
-        iteration += 1
 
     return best, best_obj, history

@@ -10,36 +10,39 @@ def tabu_search(
     time_limit: float = None
 ) -> Tuple[List[int], int, List[Tuple[float, int]]]:
     """
-    Algorytm Tabu Search dla problemu Subset Sum.
+    Tabu Search for the Subset Sum problem.
 
-    Parametry:
-    - problem: instancja SubsetSum
-    - neighborhood: funkcja generująca listę sąsiadów (all_neighbors)
-    - tabu_size: maksymalny rozmiar listy tabu (liczba ostatnich ruchów)
-    - time_limit: opcjonalne ograniczenie czasu w sekundach
+    Parameters:
+    - problem: an instance of SubsetSum
+    - neighborhood: function that generates a list of neighbors (all_neighbors)
+    - tabu_size: maximum length of the tabu list (number of recent moves to forbid)
+    - time_limit: optional time limit in seconds
 
-    Zwraca:
-    - best_solution: najlepszy znaleziony wektor bitów
-    - best_obj: wartość funkcji celu dla best_solution
-    - history: lista krotek (czas od startu, best_obj) rejestrująca postęp algorytmu
+    Returns:
+    - best_solution: the best bit-vector found
+    - best_obj: the objective value of best_solution
+    - history: list of (elapsed_time, best_obj) tuples tracking improvements
     """
     start_time = time.time()
-    # Inicjalizacja: losowe rozwiązanie
+
+    # Initialize with a random solution
     current = problem.random_solution()
     current_obj = problem.objective(current)
     best = current.copy()
     best_obj = current_obj
 
+    # Record the initial state
     history: List[Tuple[float, int]] = [(0.0, best_obj)]
 
-    tabu_list: List[int] = []  # przechowuje ostatnie indeksy bitów, które były flipowane
+    # Tabu list stores the indices of bits that were last flipped
+    tabu_list: List[int] = []
 
     while True:
-        # Check time limit
-        if time_limit is not None and time.time() - start_time > time_limit:
+        # Stop if time limit exceeded
+        if time_limit is not None and (time.time() - start_time) > time_limit:
             break
 
-        # Generate all neighbors
+        # Generate all neighbors of the current solution
         neighbors = neighborhood(current)
         if not neighbors:
             break
@@ -48,38 +51,41 @@ def tabu_search(
         candidate_obj = float('inf')
         candidate_move = None
 
-        # Evaluate each neighbor, avoid tabu moves
+        # Evaluate each neighbor, respecting the tabu list and aspiration criteria
         for nbr in neighbors:
-            # Determine move index: first index where differs
+            # Identify which bit was flipped to generate this neighbor
             move_idx = next(i for i, (b1, b2) in enumerate(zip(current, nbr)) if b1 != b2)
             obj = problem.objective(nbr)
-            # Aspiration criterion: jeśli lepszy od globalnie najlepszego, można przyjąć
+
+            # Aspiration: accept if it's better than the global best
             if obj < best_obj:
                 candidate, candidate_obj, candidate_move = nbr, obj, move_idx
                 break
-            # Wybieraj najlepszy nie-tabu
+
+            # Otherwise, consider it only if move is not tabu and it's the best so far
             if move_idx not in tabu_list and obj < candidate_obj:
                 candidate, candidate_obj, candidate_move = nbr, obj, move_idx
 
+        # If no valid candidate found, terminate
         if candidate is None:
-            # Brak możliwych kandydatów
             break
 
-        # Zastosuj ruch
+        # Apply the chosen move
         current = candidate
         current_obj = candidate_obj
 
-        # Aktualizuj tabu_list
+        # Update tabu list (FIFO)
         tabu_list.append(candidate_move)
         if len(tabu_list) > tabu_size:
             tabu_list.pop(0)
 
-        # Aktualizuj globalny best i zapis historii
+        # Update global best if improved
         if current_obj < best_obj:
             best = current.copy()
             best_obj = current_obj
             elapsed = time.time() - start_time
             history.append((elapsed, best_obj))
+            # Stop early if perfect solution found
             if best_obj == 0:
                 break
 

@@ -28,13 +28,13 @@ def parse_args():
                         help='Time limit in seconds (optional)')
     parser.add_argument('--seed', '-s', type=int,
                         help='Random seed (optional)')
-    # Parametry dla hill_climb
+    # Parameters for hill climbing
     parser.add_argument('--random-choice', action='store_true',
                         help='Random choice among improving neighbors in hill climbing')
-    # Parametr dla tabu_search
+    # Parameter for tabu search
     parser.add_argument('--tabu-size', type=int, default=50,
                         help='Tabu list size for tabu search')
-    # Parametry dla simulated annealing
+    # Parameters for simulated annealing
     parser.add_argument('--initial-temp', type=float, default=100.0,
                         help='Initial temperature for SA')
     parser.add_argument('--alpha', type=float, default=0.95,
@@ -43,7 +43,7 @@ def parse_args():
                         help='Minimum temperature to stop SA')
     parser.add_argument('--schedule', choices=['exponential', 'linear'], default='exponential',
                         help='Cooling schedule for SA')
-    # Parametry dla GA
+    # Parameters for GA
     parser.add_argument('--pop-size', type=int, default=100,
                         help='Population size for GA')
     parser.add_argument('--crossover', choices=['one_point', 'uniform'], default='one_point',
@@ -56,19 +56,19 @@ def parse_args():
 def main():
     args = parse_args()
 
-    # Ustaw ziarno RNG
+    # Set random seed if provided
     if args.seed is not None:
         random.seed(args.seed)
 
-    # Wczytaj problem
+    # Load problem instance
     problem = SubsetSum.from_file(args.input)
     if args.target is not None:
         problem.target = args.target
 
-    # Przygotuj etykietę do nazwy pliku logu
+    # Determine label for log file naming
     label = args.label if args.label else args.algorithm
 
-    # Dispatcher algorytmu
+    # Dispatch to the selected algorithm
     start_time = time.time()
     if args.algorithm == 'full':
         best_sol, best_obj, history = full_search(problem, time_limit=args.time_limit)
@@ -116,14 +116,14 @@ def main():
 
     elapsed = time.time() - start_time
 
-    # Wyświetlenie wyników
+    # Display results
     total = sum(val for val, bit in zip(problem.values, best_sol) if bit)
     print('Best solution:', best_sol)
     print('Sum:', total)
     print('|Sum - Target|:', best_obj)
     print(f'Elapsed time: {elapsed:.2f}s')
 
-    # Zapisywanie historii do CSV
+    # Save history to CSV
     logs_dir = Path('experiments') / 'logs'
     logs_dir.mkdir(parents=True, exist_ok=True)
     instance_name = Path(args.input).stem
@@ -134,6 +134,7 @@ def main():
         for t, obj in history:
             writer.writerow([f"{t:.4f}", obj])
     print(f"History saved to {log_file}")
+
 
 if __name__ == '__main__':
     main()

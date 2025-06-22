@@ -1,14 +1,18 @@
 import random
 from typing import List
 
-"""
-Moduł zawierający funkcje generujące sąsiedztwo dla problemu Subset Sum.
-"""
 
+# Module providing neighborhood generation functions for the Subset Sum problem.
 
 def flip_neighbor(solution: List[int]) -> List[int]:
     """
-    Zwraca nową listę stanów, gdzie losowo odwracamy jeden bit (0->1 lub 1->0).
+    Generate a single neighbor by flipping one randomly chosen bit in the solution.
+
+    Parameters:
+    - solution: current bit-vector solution
+
+    Returns:
+    - A new bit-vector with one bit toggled (0→1 or 1→0)
     """
     n = len(solution)
     idx = random.randrange(n)
@@ -19,9 +23,15 @@ def flip_neighbor(solution: List[int]) -> List[int]:
 
 def all_neighbors(solution: List[int]) -> List[List[int]]:
     """
-    Zwraca listę wszystkich sąsiedztw powstałych przez odwrócenie każdego bitu po kolei.
+    Generate all neighbors by flipping each bit of the solution one at a time.
+
+    Parameters:
+    - solution: current bit-vector solution
+
+    Returns:
+    - A list of new bit-vectors, each differing by exactly one bit flip
     """
-    neighbors = []
+    neighbors: List[List[int]] = []
     for i in range(len(solution)):
         neighbor = solution.copy()
         neighbor[i] = 1 - neighbor[i]

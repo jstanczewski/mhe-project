@@ -11,66 +11,62 @@ def hill_climb(
     random_choice: bool = False
 ) -> Tuple[List[int], int, List[Tuple[float, int]]]:
     """
-    Algorytm wspinaczkowy dla problemu Subset Sum.
+    Perform hill climbing on the Subset Sum problem.
 
-    Parametry:
-    - problem: instancja SubsetSum
-    - neighborhood: funkcja sąsiedztwa (flip_neighbor lub all_neighbors)
-    - time_limit: opcjonalne ograniczenie czasu w sekundach
-    - random_choice: jeśli True, spośród lepszych sąsiadów wybierany jest losowo;
-                     jeśli False, wybierany jest najlepszy sąsiad deterministycznie.
+    Args:
+        problem: SubsetSum instance with values and target.
+        neighborhood: function to generate neighbors (flip or all).
+        time_limit: optional max runtime (seconds).
+        random_choice: if True, pick a random improving neighbor; otherwise pick the best.
 
-    Zwraca:
-    - best_solution: najlepszy znaleziony wektor bitów
-    - best_obj: wartość funkcji celu dla best_solution
-    - history: lista krotek (czas od startu, best_obj) rejestrująca postęp algorytmu
+    Returns:
+        best_solution: bit vector of the best subset found.
+        best_obj: objective value of best_solution.
+        history: list of (elapsed_time, best_obj) on each improvement.
     """
     start_time = time.time()
-    # Start z losowego rozwiązania
+    # Initialize current and best solutions
     current = problem.random_solution()
     current_obj = problem.objective(current)
     best = current.copy()
     best_obj = current_obj
 
     history: List[Tuple[float, int]] = []
-    # Zapisz stan początkowy
-    history.append((0.0, best_obj))
+    history.append((0.0, best_obj))  # record initial state
 
     while True:
-        # Check time limit
-        if time_limit is not None and time.time() - start_time > time_limit:
+        # Stop if time limit is exceeded
+        if time_limit is not None and (time.time() - start_time) > time_limit:
             break
 
-        # Generate neighbors
+        # Generate neighboring solutions
         raw_neighbors = neighborhood(current)
         if not raw_neighbors:
             break
-        # Normalize single neighbor
+        # Handle case where single neighbor is returned as list of ints
         if isinstance(raw_neighbors[0], int):
             raw_neighbors = [raw_neighbors]  # type: ignore
 
-        # Evaluate neighbors
+        # Evaluate all neighbors and collect those that improve
         improvements: List[Tuple[List[int], int]] = []
         for nbr in raw_neighbors:
             obj = problem.objective(nbr)
             if obj < current_obj:
                 improvements.append((nbr, obj))
 
+        # No improvement possible, exit loop
         if not improvements:
-            # No better neighbor found
             break
 
-        # Choose next solution
-        # random
+        # Select next solution: random or best
         if random_choice:
             next_sol, next_obj = random.choice(improvements)
-        # deterministic
         else:
             next_sol, next_obj = min(improvements, key=lambda x: x[1])
 
         current, current_obj = next_sol, next_obj
 
-        # Update global best and record
+        # Update best if improved and record time
         if current_obj < best_obj:
             best = current.copy()
             best_obj = current_obj
