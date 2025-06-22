@@ -5,8 +5,10 @@ from pathlib import Path
 
 # Konfiguracja instancji
 TEST_INSTANCES = [
+    # ('huge', 'data/huge.txt'),
     ('large', 'data/large.txt'),
-    ('huge', 'data/huge.txt'),
+    ('medium', 'data/medium.txt'),
+    # ('small', 'data/small.txt'),
 ]
 
 # Parametry dla algorytmów
@@ -23,14 +25,15 @@ SA_LIN_PARAMS = {
     'min_temp': '0.01'
 }
 TABU_PARAMS = {
-    'tabu_size': '20'
+    'tabu_size': '3'
 }
 
 # Definicja algorytmów do porównania (bez GA)
 ALGORITHMS = [
+    ('full', ['--algorithm', 'full']),
     # ('hill_det', ['--algorithm', 'hill', '--neighborhood', 'all']),
     # ('hill_rand', ['--algorithm', 'hill', '--neighborhood', 'all', '--random-choice']),
-    ('tabu',     ['--algorithm', 'tabu', '--neighborhood', 'all', '--tabu-size', TABU_PARAMS['tabu_size']]),
+    # ('tabu',     ['--algorithm', 'tabu', '--neighborhood', 'all', '--tabu-size', TABU_PARAMS['tabu_size']]),
     # ('sa_exp',   ['--algorithm', 'sa',
     #               '--schedule', SA_EXP_PARAMS['schedule'],
     #               '--initial-temp', SA_EXP_PARAMS['initial_temp'],

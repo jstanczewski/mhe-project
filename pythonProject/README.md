@@ -14,7 +14,7 @@ python -m solver.cli --algorithm tabu --input data/medium.txt --neighborhood all
 python -m solver.cli --algorithm sa --input data/large.txt --schedule exponential --initial-temp 500 --alpha 0.9 --min-temp 0.01 --time-limit 5 --seed 1<br>
 
 Zmierzone przykłady:<br>
-_limit 60 sekund_<br>
+**_limit 60 sekund_**<br>
 Wspinaczkowy deterministyczny, input 1k<br>
 ![large_hill_det.png](assets%2Flarge_hill_det.png)<br>
 Wspinaczkowy losowy, input 1k<br>
@@ -24,9 +24,9 @@ Wspinaczkowy deterministyczny, input 10k<br>
 Wspinaczkowy losowy, input 10k<br>
 ![huge_hill_rand.png](assets%2Fhuge_hill_rand.png)<br>
 
-**Wnioski**
+**Wnioski**<br>
 Algorytm wspinaczkowy lepiej radzi sobie przy podejściu deterministycznym 
-w obu przypadkach, oba są jednak mało skuteczne dla próbki wielkości 10k.
+w obu przypadkach, oba są jednak mało skuteczne dla próbki wielkości 10k.<br>
 
 Tabu na rozmiarze 10, input 1k <br>
 ![large_tabu.png](assets%2Flarge_tabu.png)<br>
@@ -36,3 +36,16 @@ Tabu na rozmiarze 20, input 1k <br>
 ![large_tabu_2.png](assets%2Flarge_tabu_2.png)<br>
 Tabu na rozmiarze 20, input 10k <br>
 ![huge_tabu_2.png](assets%2Fhuge_tabu_2.png)<br>
+
+**Wnioski**<br>
+Algorytm Tabu osiąga podobne wyniki przy rozmiarach tabu 10 i 20, lepiej od wspinaczkowego radzi sobie z danymi wejściowymi 
+większego rozmiaru, ale w ciągu 60 sekund nie jest w stanie znaleźć zadowalająco bliskiej odpowiedzi.<br>
+
+Full Search dla inputu 20 <br>
+![medium_full.png](assets%2Fmedium_full.png)<br>
+Full Search dla inputu 1k <br>
+![large_full.png](assets%2Flarge_full.png)<br>
+
+**Wnioski**<br>
+Z oczywistych powodów algorytm pełnego przeglądu działa sprawnie dla niewielkich rozmiarów wejść,
+ale nie nadaje się do większych ze względu na swą złożoność obliczeniową<br>

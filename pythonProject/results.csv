@@ -1,3 +1,3 @@
 instance,algorithm,seed,time_limit,sum_diff,elapsed
-large,tabu,1,2,0,5.44
-huge,tabu,1,2,111130,61.44
+large,full,1,2,2400850,60.36
+medium,full,1,2,0,0.39

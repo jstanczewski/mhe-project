@@ -71,8 +71,7 @@ def main():
     # Dispatcher algorytmu
     start_time = time.time()
     if args.algorithm == 'full':
-        best_sol, best_obj = full_search(problem, time_limit=args.time_limit)
-        history = [(time.time() - start_time, best_obj)]
+        best_sol, best_obj, history = full_search(problem, time_limit=args.time_limit)
     elif args.algorithm == 'hill':
         from solver.algorithms.hill_climb import hill_climb
         neigh = flip_neighbor if args.neighborhood == 'flip' else all_neighbors
