@@ -5,24 +5,24 @@ from pathlib import Path
 
 # Konfiguracja instancji
 TEST_INSTANCES = [
-    # ('huge', 'data/huge.txt'),
+    ('huge', 'data/huge.txt'),
     ('large', 'data/large.txt'),
-    ('medium', 'data/medium.txt'),
+    # ('medium', 'data/medium.txt'),
     # ('small', 'data/small.txt'),
 ]
 
 # Parametry dla algorytmów
 SA_EXP_PARAMS = {
     'schedule': 'exponential',
-    'initial_temp': '500',
+    'initial_temp': '200',
     'alpha': '0.8',
-    'min_temp': '0.01'
+    'min_temp': '0.0001'
 }
 SA_LIN_PARAMS = {
     'schedule': 'linear',
-    'initial_temp': '100',
-    'alpha': '0.1',
-    'min_temp': '0.01'
+    'initial_temp': '200',
+    'alpha': '2',
+    'min_temp': '0.001'
 }
 TABU_PARAMS = {
     'tabu_size': '3'
@@ -30,20 +30,20 @@ TABU_PARAMS = {
 
 # Definicja algorytmów do porównania (bez GA)
 ALGORITHMS = [
-    ('full', ['--algorithm', 'full']),
+    # ('full', ['--algorithm', 'full']),
     # ('hill_det', ['--algorithm', 'hill', '--neighborhood', 'all']),
     # ('hill_rand', ['--algorithm', 'hill', '--neighborhood', 'all', '--random-choice']),
     # ('tabu',     ['--algorithm', 'tabu', '--neighborhood', 'all', '--tabu-size', TABU_PARAMS['tabu_size']]),
-    # ('sa_exp',   ['--algorithm', 'sa',
-    #               '--schedule', SA_EXP_PARAMS['schedule'],
-    #               '--initial-temp', SA_EXP_PARAMS['initial_temp'],
-    #               '--alpha', SA_EXP_PARAMS['alpha'],
-    #               '--min-temp', SA_EXP_PARAMS['min_temp']]),
-    # ('sa_lin',   ['--algorithm', 'sa',
-    #               '--schedule', SA_LIN_PARAMS['schedule'],
-    #               '--initial-temp', SA_LIN_PARAMS['initial_temp'],
-    #               '--alpha', SA_LIN_PARAMS['alpha'],
-    #               '--min-temp', SA_LIN_PARAMS['min_temp']]),
+    ('sa_exp',   ['--algorithm', 'sa',
+                  '--schedule', SA_EXP_PARAMS['schedule'],
+                  '--initial-temp', SA_EXP_PARAMS['initial_temp'],
+                  '--alpha', SA_EXP_PARAMS['alpha'],
+                  '--min-temp', SA_EXP_PARAMS['min_temp']]),
+    ('sa_lin',   ['--algorithm', 'sa',
+                  '--schedule', SA_LIN_PARAMS['schedule'],
+                  '--initial-temp', SA_LIN_PARAMS['initial_temp'],
+                  '--alpha', SA_LIN_PARAMS['alpha'],
+                  '--min-temp', SA_LIN_PARAMS['min_temp']]),
 ]
 
 CLI_SCRIPT = ['python', '-m', 'solver.cli']

@@ -49,3 +49,24 @@ Full Search dla inputu 1k <br>
 **Wnioski**<br>
 Z oczywistych powodów algorytm pełnego przeglądu działa sprawnie dla niewielkich rozmiarów wejść,
 ale nie nadaje się do większych ze względu na swą złożoność obliczeniową<br>
+
+Symulowane wyżarzanie<br>
+Testowane dla inputu 10k<br>
+Harmonogram wykładniczy, wolne schładzanie, dane wejściowe<br>
+init-temp 1000, alpha 0.99, min-temp 0.0001<br>
+![huge_sa_exp.png](assets%2Fhuge_sa_exp.png)<br><br>
+Harmonogram liniowy, wolne schładzanie, dane wejściowe<br>
+init-temp 1000, alpha 0.5, min-temp 0.01<br>
+![huge_sa_lin.png](assets%2Fhuge_sa_lin.png)<br><br>
+Harmonogram wykładniczy, umiarkowane schładzanie, dane wejściowe<br>
+init-temp 500, alpha 0.95, min-temp 0.0001<br>
+![huge_sa_exp2.png](assets%2Fhuge_sa_exp2.png)<br>
+Harmonogram liniowy, umiarkowane schładzanie, dane wejściowe<br>
+init-temp 500, alpha 1, min-temp 0.01<br>
+![huge_sa_lin2.png](assets%2Fhuge_sa_lin2.png)<br><br>
+Harmonogram wykładniczy, szybkie schładzanie, dane wejściowe<br>
+init-temp 200, alpha 0.8, min-temp 0.0001<br>
+![huge_sa_exp3.png](assets%2Fhuge_sa_exp3.png)<br>
+Harmonogram liniowy, szybkie schładzanie, dane wejściowe<br>
+init-temp 200, alpha 2, min-temp 0.01<br>
+![huge_sa_lin3.png](assets%2Fhuge_sa_lin3.png)<br>
