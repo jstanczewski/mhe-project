@@ -23,3 +23,16 @@ Wspinaczkowy deterministyczny, input 10k<br>
 ![huge_hill_det.png](assets%2Fhuge_hill_det.png)<br>
 Wspinaczkowy losowy, input 10k<br>
 ![huge_hill_rand.png](assets%2Fhuge_hill_rand.png)<br>
+
+**Wnioski**
+Algorytm wspinaczkowy lepiej radzi sobie przy podejściu deterministycznym 
+w obu przypadkach, oba są jednak mało skuteczne dla próbki wielkości 10k.
+
+Tabu na rozmiarze 10, input 1k <br>
+![large_tabu.png](assets%2Flarge_tabu.png)<br>
+Tabu na rozmiarze 10, input 10k <br>
+![huge_tabu.png](assets%2Fhuge_tabu.png)<br>
+Tabu na rozmiarze 20, input 1k <br>
+<br>
+Tabu na rozmiarze 20, input 10k <br>
+<br>

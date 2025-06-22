@@ -28,9 +28,9 @@ TABU_PARAMS = {
 
 # Definicja algorytmów do porównania (bez GA)
 ALGORITHMS = [
-    ('hill_det', ['--algorithm', 'hill', '--neighborhood', 'all']),
-    ('hill_rand', ['--algorithm', 'hill', '--neighborhood', 'all', '--random-choice']),
-    # ('tabu',     ['--algorithm', 'tabu', '--neighborhood', 'all', '--tabu-size', TABU_PARAMS['tabu_size']]),
+    # ('hill_det', ['--algorithm', 'hill', '--neighborhood', 'all']),
+    # ('hill_rand', ['--algorithm', 'hill', '--neighborhood', 'all', '--random-choice']),
+    ('tabu',     ['--algorithm', 'tabu', '--neighborhood', 'all', '--tabu-size', TABU_PARAMS['tabu_size']]),
     # ('sa_exp',   ['--algorithm', 'sa',
     #               '--schedule', SA_EXP_PARAMS['schedule'],
     #               '--initial-temp', SA_EXP_PARAMS['initial_temp'],

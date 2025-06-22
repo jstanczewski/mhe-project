@@ -1,5 +1,0 @@
-instance,algorithm,seed,time_limit,sum_diff,elapsed
-large,hill_det,1,2,1,1.32
-large,hill_rand,1,2,7,1.01
-huge,hill_det,1,2,317650,67.40
-huge,hill_rand,1,2,380963,60.74
