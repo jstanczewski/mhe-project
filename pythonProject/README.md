@@ -16,10 +16,10 @@ python -m solver.cli --algorithm sa --input data/large.txt --schedule exponentia
 Zmierzone przykłady:<br>
 _limit 60 sekund_<br>
 Wspinaczkowy deterministyczny, input 1k<br>
-![large_hill_det.png](assets%2Flarge_hill_det.png)
+![large_hill_det.png](assets%2Flarge_hill_det.png)<br>
 Wspinaczkowy losowy, input 1k<br>
-![large_hill_rand.png](assets%2Flarge_hill_rand.png)
+![large_hill_rand.png](assets%2Flarge_hill_rand.png)<br>
 Wspinaczkowy deterministyczny, input 10k<br>
-![huge_hill_det.png](assets%2Fhuge_hill_det.png)
+![huge_hill_det.png](assets%2Fhuge_hill_det.png)<br>
 Wspinaczkowy losowy, input 10k<br>
-![huge_hill_rand.png](assets%2Fhuge_hill_rand.png)
+![huge_hill_rand.png](assets%2Fhuge_hill_rand.png)<br>
